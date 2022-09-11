@@ -53,7 +53,22 @@ header {
   padding: 30px 40px;
 }
 
+.choice {
+  list-style-type: none;
+  background: purple;
+  color: white;
+  padding: 5px;
+  margin: 5px;
+  padding-right: 30px;
+  width:fit-content;
+  cursor: pointer;
 
+}
+.choice:hover {
+  background: rgb(238, 123, 238);
+  color: darkmagenta;
+  
+}
 
 .card-header::after {
   content: " ";

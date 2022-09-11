@@ -3,21 +3,22 @@
 var timer = document.querySelector("#timer");
 var submitButton = document.querySelector("#submit");
 var quizContainer = document.querySelector(".quiz");
-var questionContainer = document.querySelector(".questionContainer");
-var choice = document.querySelector(".choice");
-
-
-
 // Declaring gobal variables
 var secondsLeft = 10;
+var correctAnswers = 0;
+var incorrectAnswers = 0;
+
+
+
+
 
 
 // Add event listener to the start button that invokes 'startTimer' function when clicked.
 submitButton.addEventListener("click", initQuiz);
+quizContainer.addEventListener("click", checkAnswer)
 
 
-// Declare an Object for Quiz Question
-
+// Declare an Object Array of Quiz Questions
 const quizQuestions = [
   {
     question: "This is question #1",
@@ -50,10 +51,8 @@ const quizQuestions = [
 
 // This function initializes the quiz by displaying questions
 function initQuiz () {
-  
   // declare array to store output
   const questionOutput = [];
-
   // callback function to build an array of questions and answers for UI display
   quizQuestions.forEach (
     (currentQuestion, questionID) => {
@@ -64,8 +63,8 @@ function initQuiz () {
 
         // build answer html for UI and push to `answers` array
         answers.push(
-          `<li class="choice" data-questionID="${questionID}" data-choiceID="${Number} data-state="hidden">
-          ${Number} : 
+          `<li class="choice" data-questionID="${questionID}" data-choiceID="${Number}" data-state="active">
+          ${Number}. 
           ${currentQuestion.answers[Number]}
           </li>`
         );
@@ -77,15 +76,13 @@ function initQuiz () {
         `<div class="questionContainer" data-questionID="${questionID}" data-state="inactive">
         <h2>${currentQuestion.question}</h2>
         <!-- display array of answers from question object -->
-        <ul class="choicesContainer">${answers.join('')}</ul>
+        <ul class="answerContainer">${answers.join('')}</ul>
         </div>`
       )
     }
   );
-   
   // combine output list into one string of HTML
   quizContainer.innerHTML = questionOutput.join('');
-  
   
   startTimer();
   showQuestion(0);
@@ -105,7 +102,6 @@ function showQuestion (n) {
   // loop through all nodes in the array and hide questions cards that don't match argument passed to function
   for (var i = 0; i < allQuestions.length; i++) {
     if (allQuestions[i] !== allQuestions[n]) {
-      console.log(allQuestions[i])
       allQuestions[i].setAttribute("data-state", "inactive");
       allQuestions[i].setAttribute("style", "display: none;");
     } 
@@ -115,32 +111,56 @@ function showQuestion (n) {
 
 // function that saves users answer selection from a click event. 
   // TODO: pass question id and response id to `checkAnswer` function to determine if  
-quizContainer.addEventListener("click", function(event) {
-  var usersChoice = event.target; // store the data attributes from the choice element clicked by user
-  console.log(usersChoice);
+  
+  function checkAnswer (event) {
 
+  var usersChoice = event.target; // store the data attributes from the choice element clicked by user
+  
   if (usersChoice.matches('.choice')) {
     var state = usersChoice.getAttribute("data-state");
     var choiceID = usersChoice.getAttribute("data-choiceID");
     var questionID = usersChoice.getAttribute("data-questionID");
     
-    console.log(`${state} and ${choiceID} box clicked on question ${questionID}`);
+    // console.log(`${state} and ${choiceID} box clicked on question ${questionID}`);
 
-    if (state === "hidden") {
-      // change state
-      usersChoice.dataset.state = "display";
-      // usersChoice.textContent = number; // using a variable to set value
-      usersChoice.textContent = `You selected ${choiceID} answer` // usersChoice.dataset.numberID; // using dot notation to get data attribute. This is equal to "data-number" in html
-
-    } else {
-      // return state
-      usersChoice.dataset.state = "hidden"
-      usersChoice.textContent = "";
-    }
-
+      // call back function to retrieve correct answer for current question
+      if (choiceID === quizQuestions[questionID].correctAnswer) {
+        console.log("Correct Answer")
+      } else {
+        console.log("Incorrect Answer")
+      }
   }
+}
 
-});
+
+
+
+//   quizContainer.addEventListener("click", function(event) {
+//   var usersChoice = event.target; // store the data attributes from the choice element clicked by user
+//   console.log(usersChoice);
+
+//   if (usersChoice.matches('.choice')) {
+//     var state = usersChoice.getAttribute("data-state");
+//     var choiceID = usersChoice.getAttribute("data-choiceID");
+//     var questionID = usersChoice.getAttribute("data-questionID");
+    
+//     console.log(`${state} and ${choiceID} box clicked on question ${questionID}`);
+
+//     if (state === "hidden") {
+//       // change state
+//       usersChoice.dataset.state = "display";
+//       // usersChoice.textContent = number; // using a variable to set value
+//       usersChoice.textContent = `You selected ${choiceID} answer` // usersChoice.dataset.numberID; // using dot notation to get data attribute. This is equal to "data-number" in html
+
+//     } else {
+//       // return state
+//       usersChoice.dataset.state = "hidden"
+//       usersChoice.textContent = "";
+//     }
+
+//   }
+
+// });
 
 
 
@@ -167,31 +187,6 @@ function timeUp () {
 }
 
 
-// function that validates answer & stores win in localstorage
-  // if user's response value stored in a var === objects answer, then display "Correct" text and update `score variable`
-  
-function checkAnswer (questionID, numberID, usersChoice){
-  
-  // Solution 1: If statements
-  // if (questionID === )
-
-  
-  // Solution 2: for loop to enumerate properties of the object 
-  var correctAnswer = false;
-  for (var i = 0; i < Question1.length; i++) {
-    if (question1[i] === `Object Question.questionID`) {
-        if (numberId === questionID.questionID.correctChoiceIndex) {
-        correctAnswer = true;
-    }
-    else {
-      // remove time from the clock
-    }
-    }
-  }
-
-
-}
-
 
 // Updates correct questions count on screen and sets win count to client storage
 function setWins() {
@@ -208,11 +203,14 @@ function setLosses() {
 }
 
 
-// function that populates questions and answers when user selects correct answer
-  // use append to populate divs
 
 
 
 // To Do:
-  // Write question validation function
-  // Store user's score in LocalStorage
+// Init Function
+  // hide start button  
+// Write question validation function - DONE
+   // Store user's score in LocalStorage
+   // Display next question / hide existing question
+   // Reduce time if incorrect
+  
