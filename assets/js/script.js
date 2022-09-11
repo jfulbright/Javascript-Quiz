@@ -1,8 +1,9 @@
 
 // Assigns DOM location page elements as variables. 
 var timer = document.querySelector("#timer");
-var startQuiz = document.querySelector("#startBtn");
-var choicesContainer = document.querySelector(".choicesContainer");
+var submitButton = document.querySelector("#submit");
+var quizContainer = document.querySelector(".quiz");
+var questionContainer = document.querySelector(".questionContainer");
 var choice = document.querySelector(".choice");
 
 
@@ -11,39 +12,93 @@ var secondsLeft = 10;
 
 
 // Add event listener to the start button that invokes 'startTimer' function when clicked.
-startQuiz.addEventListener("click", startTimer);
+submitButton.addEventListener("click", initQuiz);
 
 
-// Questions Objects
-var Question1 = {
-  questionID: 1,
-  questionText: "This is question #1",
-  correctChoiceIndex: 2,
-  choicesArray: ["Answer 1", "Answer 2", "Answer 3", "Answer 4"]
-};
-var Question2 = {
-  questionID: 2,
-  questionText: "This is question #1",
-  correctChoiceIndex: 2,
-  choicesArray: ["Answer 1", "Answer 2", "Answer 3", "Answer 4"]
-};
-var Question3 = {
-  questionID: 3,
-  questionText: "This is question #1",
-  correctChoiceIndex: 2,
-  choicesArray: ["Answer 1", "Answer 2", "Answer 3", "Answer 4"]
-};
-var Question4 = {
-  questionID: 4,
-  questionText: "This is question #1",
-  correctChoiceIndex: 2,
-  choicesArray: ["Answer 1", "Answer 2", "Answer 3", "Answer 4"]
-};
+// Declare an Object for Quiz Question
+
+const quizQuestions = [
+  {
+    question: "This is question #1",
+    answers: {
+      1: "Answer 1",
+      2: "Answer 2",
+      3: "Answer 3", 
+    },
+    correctAnswer: "1"
+  },
+  {
+    question: "This is question #2",
+    answers: {
+      1: "Answer 1",
+      2: "Answer 2",
+      3: "Answer 3", 
+    },
+    correctAnswer: "2"
+  },
+  {
+    question: "This is question #3",
+    answers: {
+      1: "Answer 1",
+      2: "Answer 2",
+      3: "Answer 3", 
+    },
+    correctAnswer: "3"
+  }
+];
+
+// This function initializes the quiz by displaying questions
+function initQuiz () {
+  
+  // declare array to store output
+  const questionOutput = [];
+
+  // callback function to build an array of questions and answers for UI display
+  quizQuestions.forEach (
+    (currentQuestion, questionID) => {
+      const answers = [];
+
+      // for loop to enumerate through currentQuestion's answers and push html elements as a string to the `answers` var 
+      for(Number in currentQuestion.answers){
+
+        // build answer html for UI and push to `answers` array
+        answers.push(
+          `<li class="choice" data-questionID="${questionID}" data-choiceID="${Number} data-state="hidden">
+          ${Number} : 
+          ${currentQuestion.answers[Number]}
+          </li>`
+        );
+      }
+
+      console.log(answers);
+      // add this question and answers to the output var
+      questionOutput.push(
+        `<div class="questionContainer" data-questionID="${questionID}" data-state="active">
+        <h2>${currentQuestion.question}</h2>
+        <!-- display array of answers from question object -->
+        <ul class="choicesContainer">${answers.join('')}</ul>
+        </div>`
+      )
+    }
+  );
+   
+  // combine output list into one string of HTML
+  quizContainer.innerHTML = questionOutput.join('');
+  
+  
+  startTimer();
+}
+
+
+function showQuestion () {
+
+
+}
 
 
 // function that saves users answer selection from a click event. 
   // TODO: pass question id and response id to `checkAnswer` function to determine if  
-choicesContainer.addEventListener("click", function(event) {
+quizContainer.addEventListener("click", function(event) {
   var usersChoice = event.target; // store the data attributes from the choice element clicked by user
   console.log(usersChoice);
 
@@ -101,7 +156,7 @@ function timeUp () {
 function checkAnswer (questionID, numberID, usersChoice){
   
   // Solution 1: If statements
-  if (questionID === )
+  // if (questionID === )
 
   
   // Solution 2: for loop to enumerate properties of the object 
