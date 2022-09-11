@@ -7,6 +7,7 @@ var questionContainer = document.querySelector(".questionContainer");
 var choice = document.querySelector(".choice");
 
 
+
 // Declaring gobal variables
 var secondsLeft = 10;
 
@@ -70,10 +71,10 @@ function initQuiz () {
         );
       }
 
-      console.log(answers);
+      // console.log(answers);
       // add this question and answers to the output var
       questionOutput.push(
-        `<div class="questionContainer" data-questionID="${questionID}" data-state="active">
+        `<div class="questionContainer" data-questionID="${questionID}" data-state="inactive">
         <h2>${currentQuestion.question}</h2>
         <!-- display array of answers from question object -->
         <ul class="choicesContainer">${answers.join('')}</ul>
@@ -87,12 +88,28 @@ function initQuiz () {
   
   
   startTimer();
+  showQuestion(0);
 }
 
+// this function shows the Question Card from the passed argument and hides remaining questions
+function showQuestion (n) {
+  // stores an array of all questions cards in a variable
+  var allQuestions = document.querySelectorAll(".questionContainer");
 
-function showQuestion () {
-
-
+  // checks to see if the question (from the passed argument) is inactive before displaying 
+  if (allQuestions[n].dataset.state = "inactive") {
+    allQuestions[n].setAttribute("data-state", "active");
+    allQuestions[n].setAttribute("style", "display: block;");
+  }
+  
+  // loop through all nodes in the array and hide questions cards that don't match argument passed to function
+  for (var i = 0; i < allQuestions.length; i++) {
+    if (allQuestions[i] !== allQuestions[n]) {
+      console.log(allQuestions[i])
+      allQuestions[i].setAttribute("data-state", "inactive");
+      allQuestions[i].setAttribute("style", "display: none;");
+    } 
+  }
 }
 
 

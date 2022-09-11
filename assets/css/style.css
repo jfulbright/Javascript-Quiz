@@ -54,6 +54,7 @@ header {
 }
 
 
+
 .card-header::after {
   content: " ";
   display: block;
@@ -109,7 +110,9 @@ button[disabled] {
   float: right;
 }
 
-
+.deactive {
+  display: none;
+}
 
 @media (max-width: 690px) {
   .btn {
