@@ -3,9 +3,10 @@
 var timer = document.querySelector("#timer");
 var submitButton = document.querySelector("#submit");
 var quizContainer = document.querySelector(".quiz");
+var scoreDisplay = document.querySelector("#score")
 // Declaring gobal variables
 var secondsLeft = 10;
-var correctAnswers = 0;
+var score = 0;
 var incorrectAnswers = 0;
 
 
@@ -106,6 +107,7 @@ function showQuestion (n) {
       allQuestions[i].setAttribute("style", "display: none;");
     } 
   }
+  submitButton.disabled = true;
 }
 
 
@@ -125,42 +127,26 @@ function showQuestion (n) {
 
       // call back function to retrieve correct answer for current question
       if (choiceID === quizQuestions[questionID].correctAnswer) {
-        console.log("Correct Answer")
+        
+        // update score count by one
+        score++;
+        
+        // display score and correct answer message
+        scoreDisplay.textContent = `Score: ${score}`;
+        messageContent.textContent = `Correct`;
+        
+        // change to next question by calling showQuestion fuction and passing current question + 1 argument
+        const nextQuestion = ++questionID;
+        showQuestion(nextQuestion);
+
       } else {
         console.log("Incorrect Answer")
+        messageContent.textContent = `Incorrect. Lose 5 seconds`;
+        // decrement countdown
+        secondsLeft = secondsLeft-5;
       }
   }
 }
-
-
-
-
-//   quizContainer.addEventListener("click", function(event) {
-//   var usersChoice = event.target; // store the data attributes from the choice element clicked by user
-//   console.log(usersChoice);
-
-//   if (usersChoice.matches('.choice')) {
-//     var state = usersChoice.getAttribute("data-state");
-//     var choiceID = usersChoice.getAttribute("data-choiceID");
-//     var questionID = usersChoice.getAttribute("data-questionID");
-    
-//     console.log(`${state} and ${choiceID} box clicked on question ${questionID}`);
-
-//     if (state === "hidden") {
-//       // change state
-//       usersChoice.dataset.state = "display";
-//       // usersChoice.textContent = number; // using a variable to set value
-//       usersChoice.textContent = `You selected ${choiceID} answer` // usersChoice.dataset.numberID; // using dot notation to get data attribute. This is equal to "data-number" in html
-
-//     } else {
-//       // return state
-//       usersChoice.dataset.state = "hidden"
-//       usersChoice.textContent = "";
-//     }
-
-//   }
-
-// });
 
 
 
@@ -172,28 +158,28 @@ function startTimer() {
     timer.textContent = "Time: " + secondsLeft;
 
      // Tests if time has run out
-    if(secondsLeft === 0) {
+    if (secondsLeft === 0) {
       // Stops execution of action at set interval
       clearInterval(timerInterval);
-      // Calls function to create and append image
+      // Calls function to 
       timeUp();
     }
   }, 1000);
 }
 
 // function for actions when time expires
-function timeUp () {
-  console.log("time is up");
+function timeUp() {
+  messageContent.textContent = "Time is up 🏆 ";
+  submitButton.disabled = false;
+  saveScore()
 }
 
-
-
 // Updates correct questions count on screen and sets win count to client storage
-function setWins() {
-  win.textContent = winCounter;
-  localStorage.setItem("winCount", winCounter);
-  // if (userChoice === computerChoice) {
-  //   ties++;
+function saveScore() {
+  // display input field for initials
+  // save score in local storage
+  localStorage.setItem("jsQuizScore", score);
+  
 }
 
 // Updates incorrect questions count on screen and sets lose count to client storage
@@ -207,10 +193,12 @@ function setLosses() {
 
 
 // To Do:
-// Init Function
-  // hide start button  
-// Write question validation function - DONE
-   // Store user's score in LocalStorage
-   // Display next question / hide existing question
-   // Reduce time if incorrect
+ 
+// Game Over when time is up
+
+// High Score
+  // display high scores from localStorage
+
+// Error Handling
+  // End Quiz when there's no more questions
   
