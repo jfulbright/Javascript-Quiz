@@ -18,19 +18,33 @@
           <h2 id="timer" style="text-align:right;"></h2>
         </div>
         <div class="title" style="text-align:center;">
-        <h1>JavaScript Quiz</h1>
         </div>
       </header>
-      <div class="quiz">
-          <!-- Populate Question -->
-      </div>
-      <div class="messages">
-         <p id="messageContent">
-          <!-- Populate Messages -->
-         </p>
-      </div>
-      <div class="card-footer">
+      
+    <div class="quizPanel">
+        <h1>JavaScript Quiz</h1>
+        <div class="quiz"><!-- Populate Question --></div>
+        <div class="messages">
+          <p id="messageContent"><!-- Populate Messages --></p>
+        </div>
         <button id="submit" class="btn">Start Quiz</button>
+    </div>
+
+      <div class="highScoresPanel">
+        <h3>All Done!</h3>
+        <p id="finalScore"></p>
+        <form>
+          <p>
+            <label for="initials">Enter Initials:</label>
+            <input class="text-input" id="initials" type="text" placeholder="Enter Initials" />
+            <button class="btn-saveScore" id="saveScore">SAVE</button>
+          </p>
+        </form> 
+        <div class="previousHighScores">
+          <ul id="highScores">
+            <!-- Populate highscore -->
+          </ul>
+        </div>   
       </div>
     </div>
     <script src="assets/js/script.js"></script>

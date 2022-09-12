@@ -4,6 +4,12 @@ var timer = document.querySelector("#timer");
 var submitButton = document.querySelector("#submit");
 var quizContainer = document.querySelector(".quiz");
 var scoreDisplay = document.querySelector("#score")
+var saveScore = document.querySelector("#saveScore");
+
+// used to hide quiz questions and display high score at end of quiz
+var quizPanel = document.querySelector(".quizPanel"); 
+var highScoresPanel = document.querySelector(".highScoresPanel")
+
 // Declaring gobal variables
 var secondsLeft = 10;
 var score = 0;
@@ -16,7 +22,8 @@ var incorrectAnswers = 0;
 
 // Add event listener to the start button that invokes 'startTimer' function when clicked.
 submitButton.addEventListener("click", initQuiz);
-quizContainer.addEventListener("click", checkAnswer)
+quizContainer.addEventListener("click", checkAnswer);
+saveScore.addEventListener("click", SaveHighScore);
 
 
 // Declare an Object Array of Quiz Questions
@@ -112,8 +119,6 @@ function showQuestion (n) {
 
 
 // function that saves users answer selection from a click event. 
-  // TODO: pass question id and response id to `checkAnswer` function to determine if  
-  
   function checkAnswer (event) {
 
   var usersChoice = event.target; // store the data attributes from the choice element clicked by user
@@ -143,11 +148,11 @@ function showQuestion (n) {
         console.log("Incorrect Answer")
         messageContent.textContent = `Incorrect. Lose 5 seconds`;
         // decrement countdown
+        //TODO: add if statement to check if secondsleft < 5
         secondsLeft = secondsLeft-5;
       }
   }
 }
-
 
 
 //Timer:
@@ -171,22 +176,30 @@ function startTimer() {
 function timeUp() {
   messageContent.textContent = "Time is up 🏆 ";
   submitButton.disabled = false;
-  saveScore()
+  renderHighScores()
+  // 
 }
 
-// Updates correct questions count on screen and sets win count to client storage
-function saveScore() {
-  // display input field for initials
+// Displays Final Score Screen & Hides Questions
+function renderHighScores() {
+  console.log("RenderHighScores Fuction Called")
+  // hide all choice cards
+  quizPanel.setAttribute("style", "display: none;");
+  // display highScoresContainer
+  highScoresPanel.setAttribute("style", "display: block;");
+  // display final score
+  finalScore.textContent = `Score: ${score}`;
+}
+
+// invoked from event listener when saveScore btn is clicked
+function SaveHighScore (){
+  // create an array of high scores
+  // push new score to array
   // save score in local storage
-  localStorage.setItem("jsQuizScore", score);
   
+  localStorage.setItem("jsQuizScore", score);
 }
 
-// Updates incorrect questions count on screen and sets lose count to client storage
-function setLosses() {
-  lose.textContent = loseCounter;
-  localStorage.setItem("loseCount", loseCounter);
-}
 
 
 
@@ -200,5 +213,6 @@ function setLosses() {
   // display high scores from localStorage
 
 // Error Handling
-  // End Quiz when there's no more questions
+  // End Quiz when there's no more questions by calling saveScore
+  // Can't select choices when time is up
   
