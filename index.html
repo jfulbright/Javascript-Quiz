@@ -31,9 +31,10 @@
     </div>
 
       <div class="highScoresPanel">
-        <h3>All Done!</h3>
-        <p id="finalScore"></p>
+        <h2 id="highScoresPanelHeader">All Done!</h2>
         <form>
+          <h3>Would you like to save your score?</h3>
+          <p id="finalScore"></p>
           <p>
             <label for="initials">Enter Initials:</label>
             <input class="text-input" id="initials" type="text" placeholder="Enter Initials" />
@@ -41,9 +42,12 @@
           </p>
         </form> 
         <div class="previousHighScores">
-          <ul id="highScores">
-            <!-- Populate highscore -->
-          </ul>
+          <h3>High Scores:</h3>
+          <ol>
+            <li id="highScores"> <!-- Populate highscore --></li> 
+          </ol>
+          <button class="btn-saveScore" id="goBack">Go Back</button>
+          <button class="btn-saveScore" id="clearHighScore">Clear Highscores</button>
         </div>   
       </div>
     </div>
