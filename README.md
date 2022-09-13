@@ -1,10 +1,10 @@
-# JavaScript-Password-Generator
-Jeremy Fulbright - Responsive Portfolio Project
+# JavaScript-Timed-Quiz
+Jeremy Fulbright - JavaScrpt Timed Quiz
 
 ## Project Resources:
 
-- [ ] [GitHub Repo](https://github.com/jfulbright/JavaScript-Password-Generator)
-- [ ] [GitHub Pages Demo](https://jfulbright.github.io/JavaScript-Password-Generator)
+- [ ] [GitHub Repo](https://github.com/jfulbright/Javascript-Quiz)
+- [ ] [GitHub Pages Demo](https://jfulbright.github.io/Javascript-Quiz)
 
 
 ***
@@ -12,17 +12,21 @@ Jeremy Fulbright - Responsive Portfolio Project
 
 
 ## Description
-The objective of this project was to create an application that enables users to generate random passwords based on criteria that they’ve selected via window prompts including password length and character types (Special Characters, Uppercase, Lowercase, Numberic) This app will run in the browser and feature dynamically updated HTML and CSS powered by JavaScript code. Application will include error handling to validate password length is between 8 and 128 characters and user must select at least one Character Type.
+The objective of this project was to create an javascript application for a timed coding quiz with multiple-choice questions. This app will run in the browser and will feature dynamically updated HTML and CSS powered by JavaScript code. Incorrect answers will penalize score time by five seconds. 
 
 
 ## Visuals
-### User Password Preference Window Prompts: 
+### JavaScript Quiz: 
 
-![Desktop](assets/images/Password-Gen-Prompts.png "Title")
+![uiz UI](assets/images/JavaScriptQuiz.png "JavaScript Quiz")
 
-### Display Generated Password on Page:
+### JavaScritp Quiz Questions:
 
-![Desktop](assets/images/Password-Gen-UX.png "Title")
+![Quiz UI](assets/images/JavaScriptQuiz-Questions.png "JavaScritp Quiz Questions:")
+
+### JavaScritp Quiz Save High Score:
+
+![uiz UI](assets/images/JavaScriptQuiz-HighScore.png "JavaScritp Quiz Save High Score")
 
 
 ## Installation
@@ -33,11 +37,11 @@ This site may not be used or copied.
 
 ## Roadmap
 Future Roadmap Iterations will include:
-* User Interface for selecting password preferences instead of Window Prompts.
+* Code Simplification, UI/UX Enhancements, Improved Error Handling
 
 
 ## License
 See  [LICENSE](LICENSE "LICENSE") for more information.
 
 ## Project status
-This deployed site is an MVP iteration that includes foundation future functionality. 
+This deployed site is an MVP iteration where future functionality can be added. 

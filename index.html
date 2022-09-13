@@ -12,7 +12,7 @@
       <header>
         <div class="leftNav" style="text-align:left; float:left;">
           <h3 id="score"></h3>
-          <p><a href="#">View High Score</a></p>
+          <p><a id="viewHighScores" href="#">View High Score</a></p>
         </div>
         <div class="rightNav" style="text-align:right; float:right;">
           <h2 id="timer" style="text-align:right;"></h2>
@@ -23,7 +23,10 @@
       
     <div class="quizPanel">
         <h1>JavaScript Quiz</h1>
-        <div class="quiz"><!-- Populate Question --></div>
+        <div class="quiz">
+          Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score time by five seconds
+          <!-- Populate Question -->
+        </div>
         <div class="messages">
           <p id="messageContent"><!-- Populate Messages --></p>
         </div>
@@ -31,6 +34,7 @@
     </div>
 
       <div class="highScoresPanel">
+        <div id="SaveHighScore">
         <h2 id="highScoresPanelHeader">All Done!</h2>
         <form>
           <h3>Would you like to save your score?</h3>
@@ -41,6 +45,7 @@
             <button class="btn-saveScore" id="saveScore">SAVE</button>
           </p>
         </form> 
+      </div>
         <div class="previousHighScores">
           <h3>High Scores:</h3>
           <ol>

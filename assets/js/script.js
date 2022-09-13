@@ -1,6 +1,7 @@
 
 // Assigns DOM location page elements as variables. 
 var timer = document.querySelector("#timer");
+var timerInterval; // stores minutes left
 var submitButton = document.querySelector("#submit");
 var quizContainer = document.querySelector(".quiz");
 var scoreDisplay = document.querySelector("#score")
@@ -8,16 +9,13 @@ var saveScore = document.querySelector("#saveScore");
 var highScores = document.querySelector("#highScores");
 var goBack = document.querySelector("#goBack");
 var clearHighScore = document.querySelector("#clearHighScore");
-
-// used to hide quiz questions and display high score at end of quiz
+var viewHighScores = document.querySelector("#viewHighScores");
 var quizPanel = document.querySelector(".quizPanel"); 
 var highScoresPanel = document.querySelector(".highScoresPanel")
 
 // Declaring quiz variables
-var secondsLeft = 10;
+var secondsLeft = 30;
 var score = 0;
-var incorrectAnswers = 0;
-
 
 // Add event listeners to invoke functions when clicked.
 submitButton.addEventListener("click", initQuiz);
@@ -28,35 +26,35 @@ quizContainer.addEventListener("click", checkAnswer);
 // Declare an Object Array of Quiz Questions
 const quizQuestions = [
   {
-    question: "This is question #1",
+    question: "Which of the following type of variable is visible only within a function where it is defined?",
     answers: {
-      1: "Answer 1",
-      2: "Answer 2",
-      3: "Answer 3", 
-    },
-    correctAnswer: "1"
-  },
-  {
-    question: "This is question #2",
-    answers: {
-      1: "Answer 1",
-      2: "Answer 2",
-      3: "Answer 3", 
+      1: "global variable",
+      2: "local variable",
+      3: "None of the above.", 
     },
     correctAnswer: "2"
   },
   {
-    question: "This is question #3",
+    question: "Which of the following is a valid type of function javascript supports?",
     answers: {
-      1: "Answer 1",
-      2: "Answer 2",
-      3: "Answer 3", 
+      1: "named function",
+      2: "anonymous function",
+      3: "Both of the above.", 
     },
     correctAnswer: "3"
+  },
+  {
+    question: "Which built-in method returns the calling string value converted to upper case?",
+    answers: {
+      1: "toUpperCase()",
+      2: "toUpper()",
+      3: "None of the above.", 
+    },
+    correctAnswer: "1"
   }
 ];
 
-// This function initializes the quiz by displaying questions
+// Initializes quiz and displays first question
 function initQuiz () {
   // declare array to store output
   const questionOutput = [];
@@ -95,29 +93,34 @@ function initQuiz () {
   showQuestion(0);
 }
 
-// this function shows the Question Card from the passed argument and hides remaining questions
+// Renders Question Cards
 function showQuestion (n) {
   // stores an array of all questions cards in a variable
   var allQuestions = document.querySelectorAll(".questionContainer");
-
   // checks to see if the question (from the passed argument) is inactive before displaying 
-  if (allQuestions[n].dataset.state = "inactive") {
-    allQuestions[n].setAttribute("data-state", "active");
-    allQuestions[n].setAttribute("style", "display: block;");
-  }
   
   // loop through all nodes in the array and hide questions cards that don't match argument passed to function
   for (var i = 0; i < allQuestions.length; i++) {
-    if (allQuestions[i] !== allQuestions[n]) {
-      allQuestions[i].setAttribute("data-state", "inactive");
-      allQuestions[i].setAttribute("style", "display: none;");
+    // add condition when the n argument exceeds question count
+    if (n >= allQuestions.length){
+      timeUp();
+      break;
     } 
+      // Hide all question cards where the n argument doesn't match
+      else if (allQuestions[i] !== allQuestions[n]) {
+        allQuestions[i].setAttribute("data-state", "inactive");
+        allQuestions[i].setAttribute("style", "display: none;");
+      } 
+      else if (allQuestions[n].dataset.state = "inactive") {
+        allQuestions[n].setAttribute("data-state", "active");
+        allQuestions[n].setAttribute("style", "display: block;");
+      }
   }
   submitButton.disabled = true;
 }
 
 
-// function that saves users answer selection from a click event. 
+// Checks user's choice against correct answer  
   function checkAnswer (event) {
 
   var usersChoice = event.target; // store the data attributes from the choice element clicked by user
@@ -143,20 +146,22 @@ function showQuestion (n) {
         const nextQuestion = ++questionID;
         showQuestion(nextQuestion);
 
-      } else {
-        console.log("Incorrect Answer")
+      } else if (secondsLeft >= 5) {
         messageContent.textContent = `Incorrect. Lose 5 seconds`;
         // decrement countdown
-        //TODO: add if statement to check if secondsleft < 5
         secondsLeft = secondsLeft-5;
+      } else {
+        // Immediately end Quiz if there's no time left to decrement
+        clearInterval(timerInterval);
+        timeUp();
       }
   }
 }
 
-//Timer:
+// Starts timer:
 function startTimer() {
   // Sets interval in variable
-  var timerInterval = setInterval(function() {
+  timerInterval = setInterval(function() {
     secondsLeft--;
     timer.textContent = "Time: " + secondsLeft;
 
@@ -165,20 +170,37 @@ function startTimer() {
       // Stops execution of action at set interval
       clearInterval(timerInterval);
       // Calls function to 
+      
+    }
+  
+    // Tests if time has run out
+    if (secondsLeft === 0) {
+      // Clears interval
+      clearInterval(timerInterval);
       timeUp();
     }
   }, 1000);
 }
 
-// function for actions when time expires
+// Clears time when all questions are answered
 function timeUp() {
-  timer.textContent = "Time is up 🏆 ";
-  messageContent.textContent = "Time is up 🏆 ";
-  submitButton.disabled = false;
-  renderHighScores()
+  if (secondsLeft > 5) {
+    // Displays High Score UI when all questions are answered and time is left
+    clearInterval(timerInterval);
+    timer.textContent = "You answered all questions 🏆 ";
+    submitButton.disabled = false;
+    renderHighScores()
+  } else if (secondsLeft <= 5) {
+    // Displays High Score UI when time is expired
+    clearInterval(timerInterval);
+    timer.textContent = "Time is up 🏆 ";
+    submitButton.disabled = false;
+    renderHighScores()
+  }
+  
 }
 
-// function displays Final Score Screen & Hides Questions
+// Displays High Score Screen & Hides Questions
 function renderHighScores() {
   // hide all choice cards
   quizPanel.setAttribute("style", "display: none;");
@@ -191,12 +213,16 @@ function renderHighScores() {
 // render Previous High Scores from localStorage
   var initialsLocal = localStorage.getItem("Initials")
   var highScoreLocal = localStorage.getItem("High Score")
-  console.log(initialsLocal, highScoreLocal);
+  if (initialsLocal !== null || highScoreLocal !== null) {
   highScores.textContent = `${initialsLocal}: ${highScoreLocal}`;
+    } else {
+      highScores.textContent = "No High Scores saved"
+    }
 }
 
-// save current score to localStorage on saveScore btn click
+// Saves score to localStorage
 saveScore.addEventListener("click", function(event){
+  console.log("saveScore Called")
   event.preventDefault();
 
   // store initials in var from form input field
@@ -205,12 +231,27 @@ saveScore.addEventListener("click", function(event){
   // Set storage
   localStorage.setItem("Initials", initials);
   localStorage.setItem("High Score", score);
+  renderHighScores();
+})
+
+// Clears score from localStorage
+clearHighScore.addEventListener("click", function(event){
+  // clear storage
+  localStorage.removeItem("Initials", initials);
+  localStorage.removeItem("High Score", score);
   renderHighScores()
 })
-  
+
+// Reloads page to start quiz over from "Go Back" click
 goBack.addEventListener("click", function(event){
-console.log("Go Back function called")
 location.reload();
+})
+
+// Renders High Score Page from "View High Score Link" click
+viewHighScores.addEventListener("click", function(event){
+  renderHighScores()
+  SaveHighScore.setAttribute("style", "display: none;");
+
 })
   
   
